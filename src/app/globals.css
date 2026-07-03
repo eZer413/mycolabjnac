@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-900 text-zinc-100 antialiased;
+  /* Reserve space for the fixed bottom nav + iOS safe area. */
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+/* Larger, comfortable tap targets by default (one-handed night use). */
+button,
+select,
+input,
+textarea {
+  font-size: 16px; /* prevents iOS zoom-on-focus */
+}
+
+/* Hide number input spinners — steppers handle increments. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

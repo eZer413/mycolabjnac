@@ -1,0 +1,44 @@
+// MycoLab — Prisma schema (SQLite, local file DB).
+// Outcome is stored as a String because SQLite does not support native enums;
+// values are validated with Zod (CLEAN | CONTAMINATED | FRUITED | DISCARDED).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Batch {
+  // Human-readable id, e.g. "AUR-0704-01" (speciesCode-MMDD-dailySequence).
+  id                  String   @id
+  species             String
+  quantity            Int      @default(1) // number of bags/plates in this inoculation event
+  pdaBatchRef         String? // free-text reference to the PDA media prep used
+  sterilizationMethod String
+  inoculationDate     DateTime
+  zone                String
+  outcome             String   @default("CLEAN") // CLEAN | CONTAMINATED | FRUITED | DISCARDED
+  notes               String?
+  createdAt           DateTime @default(now())
+
+  @@index([outcome])
+  @@index([inoculationDate])
+}
+
+model Consumable {
+  id        String @id @default(cuid())
+  name      String @unique
+  unit      String
+  stock     Float  @default(0)
+  threshold Float  @default(0)
+}
+
+// Key/value store for editable base ratios and editable option lists.
+// JSON-encoded values are stored as strings.
+model Setting {
+  key   String @id
+  value String
+}
