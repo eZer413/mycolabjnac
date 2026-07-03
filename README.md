@@ -100,6 +100,18 @@ TURSO_DATABASE_URL="libsql://..." TURSO_AUTH_TOKEN="..." npm run db:seed
 $env:TURSO_DATABASE_URL="libsql://..."; $env:TURSO_AUTH_TOKEN="..."; npm run db:seed
 ```
 
+**No-CLI alternative.** You can skip the Turso CLI entirely: create the database
+from the Turso web dashboard ([app.turso.tech](https://app.turso.tech)), copy its
+URL and create a token there, then apply the schema and seed from your machine
+over the network:
+
+```powershell
+# Windows PowerShell (set both, then run the two commands)
+$env:TURSO_DATABASE_URL="libsql://..."; $env:TURSO_AUTH_TOKEN="..."
+npm run db:push:turso   # creates the tables in Turso from the migration SQL
+npm run db:seed         # loads default settings, consumables, example batches
+```
+
 **B) Deploy on Vercel.**
 
 1. Push this repo to GitHub (already done: `eZer413/mycolabjnac`).
