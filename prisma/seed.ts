@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import {
   DEFAULT_ANTIBIOTIC_CONSUMABLE_NAME,
   DEFAULT_ANTIBIOTIC_MG_PER_LITER,
@@ -10,8 +9,11 @@ import {
   DEFAULT_ZONES,
   SETTING_KEYS,
 } from "../src/lib/defaults";
+import { createPrismaClient } from "../src/lib/db";
 
-const prisma = new PrismaClient();
+// Uses the same factory as the app: seeds the local file by default, or Turso
+// when TURSO_DATABASE_URL / TURSO_AUTH_TOKEN are present in the environment.
+const prisma = createPrismaClient();
 
 async function main() {
   // --- Settings (base ratios + editable option lists) ---

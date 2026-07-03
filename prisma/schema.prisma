@@ -3,7 +3,10 @@
 // values are validated with Zod (CLEAN | CONTAMINATED | FRUITED | DISCARDED).
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  // Driver adapters let the client talk to Turso (libSQL) in production while
+  // still using a plain local SQLite file for `prisma migrate dev`.
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {

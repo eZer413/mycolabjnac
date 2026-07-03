@@ -34,7 +34,8 @@ ratios are editable in **Settings** — change your protocol without editing cod
 
 - Next.js (App Router) + TypeScript
 - Tailwind CSS (dark, low-eye-strain theme)
-- SQLite via Prisma (local file DB — data survives restarts)
+- SQLite via Prisma — a local file DB in development, hosted **Turso** (libSQL)
+  in production. Same code, selected automatically by environment.
 - Server Actions for all reads/writes
 - Zod for input validation
 
@@ -63,6 +64,61 @@ The database lives at `prisma/dev.db`. It is git-ignored and persists across
 restarts. Re-running the seed will **not** overwrite your existing settings,
 stock levels, or batches.
 
+## Deploying to Vercel + Turso
+
+Production runs the exact same code against a hosted **Turso** (libSQL) database
+instead of the local file. The app auto-detects this: when `TURSO_DATABASE_URL`
+is set it uses Turso; otherwise it uses `prisma/dev.db`. Local development is
+unaffected — you never need Turso to work locally.
+
+**A) Create the Turso database (one time).**
+
+```bash
+# Install the CLI and sign up (opens a browser)
+# macOS/Linux: curl -sSfL https://get.tur.so/install.sh | bash
+# Windows:     irm https://get.tur.so/install.ps1 | iex
+turso auth signup
+
+# Create the database
+turso db create mycolab
+
+# Push the schema (applies the committed migration SQL to Turso)
+turso db shell mycolab < prisma/migrations/20260703191607_init/migration.sql
+
+# Grab the two credentials you'll paste into Vercel
+turso db show mycolab --url          # -> TURSO_DATABASE_URL (libsql://...)
+turso db tokens create mycolab       # -> TURSO_AUTH_TOKEN
+```
+
+Then seed Turso once (run from the project root, substituting your values):
+
+```bash
+# macOS/Linux
+TURSO_DATABASE_URL="libsql://..." TURSO_AUTH_TOKEN="..." npm run db:seed
+
+# Windows PowerShell
+$env:TURSO_DATABASE_URL="libsql://..."; $env:TURSO_AUTH_TOKEN="..."; npm run db:seed
+```
+
+**B) Deploy on Vercel.**
+
+1. Push this repo to GitHub (already done: `eZer413/mycolabjnac`).
+2. On [vercel.com](https://vercel.com), **Add New → Project** and import the repo.
+   Framework preset auto-detects as **Next.js**; leave the build command as the
+   default (`npm run build`, which runs `prisma generate` first).
+3. In **Settings → Environment Variables**, add for the **Production** (and
+   Preview) environment:
+   - `TURSO_DATABASE_URL` = your `libsql://...` URL
+   - `TURSO_AUTH_TOKEN` = your token
+   - `NEXT_TELEMETRY_DISABLED` = `1` (optional)
+4. **Deploy.** Your app goes live at `https://<project-name>.vercel.app`
+   (e.g. `mycolab.vercel.app` if the name is available). Open it on your phone —
+   no domain needed.
+
+Schema changes later: create the migration locally with `npm run db:migrate`,
+commit it, then apply it to Turso with
+`turso db shell mycolab < prisma/migrations/<new>/migration.sql` and redeploy.
+
 ## Useful scripts
 
 | Command | What it does |
@@ -83,8 +139,9 @@ stock levels, or batches.
   records how many. `pdaBatchRef` is a free-text label for the PDA media prep used.
 - **Contamination rate** counts batches (a batch is clean or contaminated as a
   whole), excluding `DISCARDED` from the denominator.
-- **Single-device, offline** by design. The SQLite file is local; there is no
-  cloud sync. To move your data, copy `prisma/dev.db`.
+- **Storage:** local `prisma/dev.db` in development (copy the file to back it up);
+  hosted Turso in production, so you can reach the same data from any device via
+  the deployed URL. See *Deploying to Vercel + Turso* above.
 
 ## Project structure
 
