@@ -91,7 +91,7 @@ export function MediaCalculator({
           hint={`${pdaGramsPerLiter} g / 1000 ml`}
         />
         <ResultCard
-          label="MYCIPEN-MD"
+          label={antibioticConsumableName}
           value={round(antibioticMg)}
           unit="mg"
           hint={`${antibioticMgPerLiter} mg / L`}

@@ -31,12 +31,12 @@ export const DEFAULT_STERILIZATION_METHODS: string[] = [
 export const DEFAULT_ZONES: string[] = ["Lab", "Incubation", "Fruiting tent"];
 
 export const DEFAULT_PDA_CONSUMABLE_NAME = "PDA agar";
-export const DEFAULT_ANTIBIOTIC_CONSUMABLE_NAME = "MYCIPEN-MD";
+export const DEFAULT_ANTIBIOTIC_CONSUMABLE_NAME = "Antibiotic";
 
 export const DEFAULT_CONSUMABLES = [
   { name: "PDA agar", unit: "g", stock: 1000, threshold: 200 },
-  { name: "MYCIPEN-MD", unit: "mg", stock: 5000, threshold: 1000 },
-  { name: "Parafilm", unit: "rolls", stock: 4, threshold: 1 },
+  { name: "Antibiotic", unit: "mg", stock: 5000, threshold: 1000 },
+  { name: "Cling wrap", unit: "rolls", stock: 4, threshold: 1 },
   { name: "Isopropyl alcohol", unit: "L", stock: 5, threshold: 1 },
   { name: "Gloves", unit: "pairs", stock: 100, threshold: 20 },
 ];
