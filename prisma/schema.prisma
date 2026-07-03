@@ -7,6 +7,10 @@ generator client {
   // Driver adapters let the client talk to Turso (libSQL) in production while
   // still using a plain local SQLite file for `prisma migrate dev`.
   previewFeatures = ["driverAdapters"]
+  // Include the Linux engine binaries so the client runs on Vercel's serverless
+  // (AWS Lambda) runtime, not just the local machine. Covers Node 18 (1.0.x) and
+  // Node 20+/AL2023 (3.0.x).
+  binaryTargets   = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
