@@ -63,6 +63,13 @@ export interface MediaPrepRecord {
   deletedAt: string | null;
 }
 
+// Small key/value table for sync bookkeeping (last-synced time, per-table push/
+// pull cursors). Kept local-only — it is never sent to the cloud.
+export interface SyncMetaRecord {
+  key: string;
+  value: string;
+}
+
 export function nowISO(): string {
   return new Date().toISOString();
 }
@@ -77,6 +84,7 @@ class MycoLabDB extends Dexie {
   consumables!: Table<ConsumableRecord, string>;
   settings!: Table<SettingRecord, string>;
   mediaPreps!: Table<MediaPrepRecord, string>;
+  syncMeta!: Table<SyncMetaRecord, string>;
 
   constructor() {
     super("mycolab");
@@ -87,6 +95,11 @@ class MycoLabDB extends Dexie {
       consumables: "id, &name, updatedAt, deletedAt",
       settings: "key, updatedAt",
       mediaPreps: "id, createdAt, updatedAt, deletedAt",
+    });
+    // Version 2 adds the sync bookkeeping table. Dexie carries the existing
+    // stores and their data forward automatically — nothing is lost on upgrade.
+    this.version(2).stores({
+      syncMeta: "key",
     });
     // Runs once, the first time the database is created on this device.
     this.on("populate", () => seed(this));

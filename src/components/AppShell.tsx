@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLiveQuery } from "dexie-react-hooks";
 import { NewBatchModal } from "./NewBatchModal";
+import { SyncIndicator } from "./SyncIndicator";
 import { getNewBatchContext } from "@/lib/local/store";
 
 type Tab = { href: string; label: string; icon: ReactNode };
@@ -35,6 +36,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <SyncIndicator />
+
       <main className="mx-auto min-h-screen w-full max-w-md px-4 pt-5">
         {children}
       </main>
