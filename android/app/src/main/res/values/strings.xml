@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">MycoLab</string>
-    <string name="title_activity_main">MycoLab</string>
+    <string name="app_name">ShrooMumayLab</string>
+    <string name="title_activity_main">ShrooMumayLab</string>
     <string name="package_name">com.mycolab.app</string>
     <string name="custom_url_scheme">com.mycolab.app</string>
 </resources>
