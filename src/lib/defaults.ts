@@ -38,7 +38,8 @@ export const DEFAULT_CONSUMABLES = [
   { name: "Antibiotic", unit: "mg", stock: 5000, threshold: 1000 },
   { name: "Cling wrap", unit: "rolls", stock: 4, threshold: 1 },
   { name: "Isopropyl alcohol", unit: "L", stock: 5, threshold: 1 },
-  { name: "Gloves", unit: "pairs", stock: 100, threshold: 20 },
+  { name: "Grains", unit: "kg", stock: 5, threshold: 1 },
+  { name: "Scalpel blade", unit: "pcs", stock: 20, threshold: 10 },
 ];
 
 export const OUTCOMES = ["CLEAN", "CONTAMINATED", "FRUITED", "DISCARDED"] as const;

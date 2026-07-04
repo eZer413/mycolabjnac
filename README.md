@@ -17,15 +17,18 @@ fruiting bags per cycle). Metric units only.
    sequence). Outcome defaults to `CLEAN`; tap a batch to expand it and update the
    outcome (e.g. clean → contaminated) days later.
 2. **Media calculator** — enter a target volume (ml) and it computes PDA grams and
-   MYCIPEN-MD mg from your stored ratios (default 39 g / 1000 ml and 150 mg/L).
+   antibiotic mg from your stored ratios (default 39 g / 1000 ml and 150 mg/L).
    Quick-volume buttons (250 / 500 / 1000 / 2000). **Log prep** deducts the used
-   PDA agar and MYCIPEN-MD from consumable stock.
+   PDA agar and antibiotic from consumable stock **and records a dated entry in a
+   "Prep history" list** below the calculator, so you can see when each prep was
+   made and how much stock it used.
 3. **Contamination patterns** — overall contamination rate plus a breakdown by
    sterilization method, zone, and species (contaminated ÷ non-discarded batches),
    shown as bars. High-rate segments (≥ 25% with 3+ batches) are highlighted.
 4. **Consumables tracker** — current stock with +/− steppers, editable low-stock
    threshold, and a LOW flag when stock ≤ threshold. Seeded with PDA agar (g),
-   MYCIPEN-MD (mg), Parafilm (rolls), Isopropyl alcohol (L), Gloves (pairs).
+   antibiotic (mg), Cling wrap (rolls), Isopropyl alcohol (L), Grains (kg),
+   Scalpel blade (pcs).
 
 All option lists (species + ID codes, sterilization methods, zones) and the base
 ratios are editable in **Settings** — change your protocol without editing code.

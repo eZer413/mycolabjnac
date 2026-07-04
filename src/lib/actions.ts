@@ -161,8 +161,23 @@ export async function logMediaPrep(
       });
     }
 
+    // Record a dated history entry for this prep.
+    await prisma.mediaPrep.create({
+      data: { volumeMl, pdaGrams, antibioticMg },
+    });
+
     revalidateAll();
     return { ok: true, data: { pdaGrams, antibioticMg } };
+  } catch (e) {
+    return { ok: false, error: firstError(e) };
+  }
+}
+
+export async function deleteMediaPrep(id: string): Promise<ActionResult> {
+  try {
+    await prisma.mediaPrep.delete({ where: { id } });
+    revalidatePath("/media");
+    return { ok: true };
   } catch (e) {
     return { ok: false, error: firstError(e) };
   }

@@ -49,3 +49,15 @@ model Setting {
   key   String @id
   value String
 }
+
+// One row per logged media prep (from the Media calculator's "Log prep"), so the
+// operator has a dated history of what was prepared and how much stock it used.
+model MediaPrep {
+  id           String   @id @default(cuid())
+  volumeMl     Float
+  pdaGrams     Float
+  antibioticMg Float
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}

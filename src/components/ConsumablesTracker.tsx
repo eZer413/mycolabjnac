@@ -16,8 +16,10 @@ export type ConsumableRow = {
 const STEP_BY_UNIT: Record<string, number> = {
   g: 50,
   mg: 100,
+  kg: 1,
   L: 1,
   rolls: 1,
+  pcs: 5,
   pairs: 5,
 };
 
