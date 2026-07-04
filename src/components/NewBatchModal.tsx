@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { createBatch } from "@/lib/actions";
+import { createBatch } from "@/lib/local/store";
 import { SpeciesOption } from "@/lib/defaults";
 import { Chip } from "./Chip";
 
@@ -38,7 +37,6 @@ export function NewBatchModal({
   options: NewBatchOptions;
   defaults: NewBatchDefaults;
 }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -79,7 +77,6 @@ export function NewBatchModal({
         notes,
       });
       if (res.ok) {
-        router.refresh();
         onClose();
       } else {
         setError(res.error);

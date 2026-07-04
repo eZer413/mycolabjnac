@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { setConsumableThreshold, stepConsumable } from "@/lib/actions";
+import { setConsumableThreshold, stepConsumable } from "@/lib/local/store";
 
 export type ConsumableRow = {
   id: string;
@@ -43,7 +42,6 @@ export function ConsumablesTracker({ items }: { items: ConsumableRow[] }) {
 }
 
 function ConsumableCard({ item }: { item: ConsumableRow }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [editingThreshold, setEditingThreshold] = useState(false);
   const [threshold, setThreshold] = useState(String(item.threshold));
@@ -53,7 +51,6 @@ function ConsumableCard({ item }: { item: ConsumableRow }) {
   const doStep = (delta: number) => {
     startTransition(async () => {
       await stepConsumable({ id: item.id, delta });
-      router.refresh();
     });
   };
 
@@ -65,7 +62,6 @@ function ConsumableCard({ item }: { item: ConsumableRow }) {
       });
       if (res.ok) {
         setEditingThreshold(false);
-        router.refresh();
       }
     });
   };

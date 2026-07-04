@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import {
   updateOptionList,
   updateRatios,
   updateSpeciesList,
-} from "@/lib/actions";
+  type AppSettings,
+} from "@/lib/local/store";
 import { SpeciesOption } from "@/lib/defaults";
-import { AppSettings } from "@/lib/settings";
 
 export function SettingsView({ settings }: { settings: AppSettings }) {
   return (
@@ -72,7 +71,6 @@ function SaveBtn({
 }
 
 function RatiosSection({ pda, antibiotic }: { pda: number; antibiotic: number }) {
-  const router = useRouter();
   const [pending, start] = useTransition();
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +87,6 @@ function RatiosSection({ pda, antibiotic }: { pda: number; antibiotic: number })
       });
       if (res.ok) {
         setSaved(true);
-        router.refresh();
       } else setError(res.error);
     });
   };
@@ -128,7 +125,6 @@ function RatiosSection({ pda, antibiotic }: { pda: number; antibiotic: number })
 }
 
 function SpeciesSection({ initial }: { initial: SpeciesOption[] }) {
-  const router = useRouter();
   const [pending, start] = useTransition();
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -152,7 +148,6 @@ function SpeciesSection({ initial }: { initial: SpeciesOption[] }) {
       const res = await updateSpeciesList({ values: cleaned });
       if (res.ok) {
         setSaved(true);
-        router.refresh();
       } else setError(res.error);
     });
   };
@@ -211,7 +206,6 @@ function StringListSection({
   listKey: "sterilizationMethods" | "zones";
   initial: string[];
 }) {
-  const router = useRouter();
   const [pending, start] = useTransition();
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -231,7 +225,6 @@ function StringListSection({
       const res = await updateOptionList({ key: listKey, values: cleaned });
       if (res.ok) {
         setSaved(true);
-        router.refresh();
       } else setError(res.error);
     });
   };

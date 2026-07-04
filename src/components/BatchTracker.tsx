@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { deleteBatch, updateBatch } from "@/lib/actions";
+import { deleteBatch, updateBatch } from "@/lib/local/store";
 import { OUTCOME_META, OUTCOMES, Outcome } from "@/lib/defaults";
 
 export type BatchRow = {
@@ -93,7 +92,6 @@ function BatchCard({
   open: boolean;
   onToggle: () => void;
 }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [notes, setNotes] = useState(batch.notes ?? "");
   const [error, setError] = useState<string | null>(null);
@@ -103,16 +101,14 @@ function BatchCard({
     setError(null);
     startTransition(async () => {
       const res = await updateBatch({ id: batch.id, outcome, notes });
-      if (res.ok) router.refresh();
-      else setError(res.error);
+      if (!res.ok) setError(res.error);
     });
   };
 
   const remove = () => {
     startTransition(async () => {
       const res = await deleteBatch(batch.id);
-      if (res.ok) router.refresh();
-      else setError(res.error);
+      if (!res.ok) setError(res.error);
     });
   };
 

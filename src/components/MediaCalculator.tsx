@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { logMediaPrep } from "@/lib/actions";
+import { logMediaPrep } from "@/lib/local/store";
 
 const QUICK_VOLUMES = [250, 500, 1000, 2000];
 
@@ -17,7 +16,6 @@ export function MediaCalculator({
   pdaConsumableName: string;
   antibioticConsumableName: string;
 }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [volume, setVolume] = useState<number>(1000);
   const [flash, setFlash] = useState<string | null>(null);
@@ -42,7 +40,6 @@ export function MediaCalculator({
             res.data!.antibioticMg,
           )} cc ${antibioticConsumableName}.`,
         );
-        router.refresh();
       } else {
         setError(res.error);
       }

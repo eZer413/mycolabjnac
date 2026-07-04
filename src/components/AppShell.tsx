@@ -3,11 +3,10 @@
 import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  NewBatchDefaults,
-  NewBatchModal,
-  NewBatchOptions,
-} from "./NewBatchModal";
+import { useLiveQuery } from "dexie-react-hooks";
+import { NewBatchModal } from "./NewBatchModal";
+import { SyncIndicator } from "./SyncIndicator";
+import { getNewBatchContext } from "@/lib/local/store";
 
 type Tab = { href: string; label: string; icon: ReactNode };
 
@@ -18,20 +17,27 @@ const TABS: Tab[] = [
   { href: "/supplies", label: "Supplies", icon: <IconSupplies /> },
 ];
 
-export function AppShell({
-  children,
-  options,
-  defaults,
-}: {
-  children: ReactNode;
-  options: NewBatchOptions;
-  defaults: NewBatchDefaults;
-}) {
+// Empty fallback used until the on-device store has loaded the context.
+const EMPTY_CONTEXT = {
+  options: { species: [], zones: [], sterilizationMethods: [] },
+  defaults: {
+    species: "",
+    zone: "",
+    sterilizationMethod: "",
+    quantity: 100,
+    pdaBatchRef: "",
+  },
+};
+
+export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [modalOpen, setModalOpen] = useState(false);
+  const ctx = useLiveQuery(getNewBatchContext, [], EMPTY_CONTEXT);
 
   return (
     <>
+      <SyncIndicator />
+
       <main className="mx-auto min-h-screen w-full max-w-md px-4 pt-5">
         {children}
       </main>
@@ -39,8 +45,8 @@ export function AppShell({
       <NewBatchModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        options={options}
-        defaults={defaults}
+        options={ctx.options}
+        defaults={ctx.defaults}
       />
 
       <nav
