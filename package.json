@@ -12,12 +12,17 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
-    "db:push:turso": "node scripts/push-schema.mjs"
+    "db:push:turso": "node scripts/push-schema.mjs",
+    "cap:sync": "next build && cap sync android",
+    "cap:open": "cap open android",
+    "android:icons": "capacitor-assets generate --android"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
     "@libsql/client": "^0.8.1",
     "@prisma/adapter-libsql": "^5.22.0",
     "@prisma/client": "5.22.0",
@@ -29,12 +34,14 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.2.1",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "10.4.19",
     "postcss": "8.4.39",
     "prisma": "5.22.0",
+    "sharp": "^0.33.5",
     "tailwindcss": "3.4.6",
     "tsx": "4.16.2",
     "typescript": "5.5.3"

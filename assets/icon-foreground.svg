@@ -1,0 +1,18 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mushroom kept within the central adaptive-icon safe zone (~640px). -->
+  <g>
+    <!-- Stem -->
+    <path d="M462 512 h100 v150 a50 50 0 0 1 -50 50 h0 a50 50 0 0 1 -50 -50 z"
+          fill="#ece7d6"/>
+    <path d="M462 512 h100 v40 h-100 z" fill="#d9d3bf"/>
+    <!-- Cap -->
+    <path d="M300 520 a212 150 0 0 1 424 0 z" fill="#4fb487"/>
+    <!-- Cap highlight -->
+    <path d="M300 520 a212 150 0 0 1 424 0 a212 46 0 0 0 -424 0 z" fill="#3a9770"/>
+    <!-- Spots -->
+    <circle cx="430" cy="452" r="26" fill="#7dd3a8"/>
+    <circle cx="560" cy="430" r="34" fill="#7dd3a8"/>
+    <circle cx="620" cy="486" r="20" fill="#7dd3a8"/>
+    <circle cx="500" cy="486" r="16" fill="#7dd3a8"/>
+  </g>
+</svg>
