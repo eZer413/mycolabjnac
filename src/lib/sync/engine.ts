@@ -59,9 +59,31 @@ async function pullTable(client: Client, t: SyncTable): Promise<number> {
     for (const raw of rs.rows) {
       const rec = rowToRecord(t, raw as unknown as Record<string, unknown>);
       const updatedAt = String(rec.updatedAt ?? "");
-      const local = (await table.get(rec[t.pk] as string)) as
-        | { updatedAt?: string }
-        | undefined;
+      const pkVal = rec[t.pk] as string;
+
+      // Natural-key collision: the same logical row (e.g. a consumable with the
+      // same unique `name`) exists locally under a DIFFERENT id — typically
+      // because both devices seeded it independently. Converge onto the incoming
+      // id so the unique index never rejects the write, keeping whichever side's
+      // data is newer.
+      if (t.uniqueBy) {
+        const twin = (await table
+          .where(t.uniqueBy)
+          .equals(rec[t.uniqueBy] as string)
+          .first()) as (Record<string, unknown> & { updatedAt?: string }) | undefined;
+        if (twin && twin[t.pk] !== pkVal) {
+          await table.delete(twin[t.pk] as string);
+          if (String(twin.updatedAt ?? "") > updatedAt) {
+            // Local edit is newer — keep its data, but under the incoming id.
+            await table.put({ ...twin, [t.pk]: pkVal });
+            applied += 1;
+            if (updatedAt > maxUpdated) maxUpdated = updatedAt;
+            continue;
+          }
+        }
+      }
+
+      const local = (await table.get(pkVal)) as { updatedAt?: string } | undefined;
       // Last-edit-wins: apply only if we have no local copy or the remote is
       // strictly newer. Equal timestamps mean it is a row we just pushed.
       if (!local || updatedAt > (local.updatedAt ?? "")) {

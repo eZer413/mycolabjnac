@@ -9,6 +9,11 @@ export type SyncTable = {
   columns: string[]; // all columns, in a stable order (pk first)
   // CREATE TABLE for the remote side. IF NOT EXISTS keeps it idempotent.
   ddl: string;
+  // A locally-unique secondary field (a natural key). When two devices seed the
+  // same logical row under different ids, the sync converges them by this field
+  // instead of hitting the unique-index ConstraintError. Consumables need it
+  // because "name" is unique but ids are generated per device.
+  uniqueBy?: string;
 };
 
 export const SYNC_TABLES: SyncTable[] = [
@@ -47,6 +52,7 @@ export const SYNC_TABLES: SyncTable[] = [
   {
     store: "consumables",
     pk: "id",
+    uniqueBy: "name",
     columns: [
       "id",
       "name",
