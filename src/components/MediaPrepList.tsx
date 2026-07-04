@@ -85,7 +85,7 @@ function PrepCard({ prep }: { prep: MediaPrepRow }) {
               {round(prep.pdaGrams)} g PDA
             </p>
             <p className="text-moss-400 tabular-nums">
-              {round(prep.antibioticMg)} mg {prep.antibioticLabel}
+              {round(prep.antibioticMg)} cc {prep.antibioticLabel}
             </p>
           </div>
           <button

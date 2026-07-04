@@ -108,7 +108,7 @@ function RatiosSection({ pda, antibiotic }: { pda: number; antibiotic: number })
           />
         </label>
         <label className="block">
-          <span className="text-xs text-zinc-400">Antibiotic (mg per L)</span>
+          <span className="text-xs text-zinc-400">Antibiotic (cc per L)</span>
           <input
             type="number"
             inputMode="decimal"

@@ -18,6 +18,7 @@ const STEP_BY_UNIT: Record<string, number> = {
   mg: 100,
   kg: 1,
   L: 1,
+  cc: 1,
   rolls: 1,
   pcs: 5,
   pairs: 5,

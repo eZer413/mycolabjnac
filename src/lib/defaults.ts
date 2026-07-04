@@ -15,7 +15,8 @@ export const SETTING_KEYS = {
 } as const;
 
 export const DEFAULT_PDA_GRAMS_PER_LITER = 39; // 39 g per 1000 ml
-export const DEFAULT_ANTIBIOTIC_MG_PER_LITER = 150; // MYCIPEN-MD 150 mg/L
+// Antibiotic dosed by syringe in cc: 0.1 cc per 200 ml == 0.5 cc per 1000 ml.
+export const DEFAULT_ANTIBIOTIC_MG_PER_LITER = 0.5; // cc per L
 
 export const DEFAULT_SPECIES: SpeciesOption[] = [
   { name: "Auricularia sp.", code: "AUR" },
@@ -35,7 +36,7 @@ export const DEFAULT_ANTIBIOTIC_CONSUMABLE_NAME = "Antibiotic";
 
 export const DEFAULT_CONSUMABLES = [
   { name: "PDA agar", unit: "g", stock: 1000, threshold: 200 },
-  { name: "Antibiotic", unit: "mg", stock: 5000, threshold: 1000 },
+  { name: "Antibiotic", unit: "cc", stock: 30, threshold: 5 },
   { name: "Cling wrap", unit: "rolls", stock: 4, threshold: 1 },
   { name: "Isopropyl alcohol", unit: "L", stock: 5, threshold: 1 },
   { name: "Grains", unit: "kg", stock: 5, threshold: 1 },

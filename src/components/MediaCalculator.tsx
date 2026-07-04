@@ -40,7 +40,7 @@ export function MediaCalculator({
         setFlash(
           `Logged: −${round(res.data!.pdaGrams)} g ${pdaConsumableName}, −${round(
             res.data!.antibioticMg,
-          )} mg ${antibioticConsumableName}.`,
+          )} cc ${antibioticConsumableName}.`,
         );
         router.refresh();
       } else {
@@ -93,8 +93,8 @@ export function MediaCalculator({
         <ResultCard
           label={antibioticConsumableName}
           value={round(antibioticMg)}
-          unit="mg"
-          hint={`${antibioticMgPerLiter} mg / L`}
+          unit="cc"
+          hint={`${antibioticMgPerLiter} cc / L`}
         />
       </div>
 
