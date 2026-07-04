@@ -1,8 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { deleteMediaPrep } from "@/lib/actions";
+import { deleteMediaPrep } from "@/lib/local/store";
 
 export type MediaPrepRow = {
   id: string;
@@ -59,13 +58,11 @@ export function MediaPrepList({ preps }: { preps: MediaPrepRow[] }) {
 }
 
 function PrepCard({ prep }: { prep: MediaPrepRow }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   const remove = () => {
     startTransition(async () => {
-      const res = await deleteMediaPrep(prep.id);
-      if (res.ok) router.refresh();
+      await deleteMediaPrep(prep.id);
     });
   };
 

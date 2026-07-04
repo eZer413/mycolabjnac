@@ -1,11 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useLiveQuery } from "dexie-react-hooks";
 import { SettingsView } from "@/components/SettingsView";
-import { getSettings } from "@/lib/settings";
+import { getSettings } from "@/lib/local/store";
 
-export const dynamic = "force-dynamic";
+export default function SettingsPage() {
+  const settings = useLiveQuery(getSettings, []);
 
-export default async function SettingsPage() {
-  const settings = await getSettings();
   return (
     <>
       <header className="mb-4 flex items-center gap-3">
@@ -23,7 +25,7 @@ export default async function SettingsPage() {
       <p className="mb-4 text-sm text-zinc-400">
         Edit your protocol without touching code. Changes apply to new entries.
       </p>
-      <SettingsView settings={settings} />
+      {settings && <SettingsView settings={settings} />}
     </>
   );
 }

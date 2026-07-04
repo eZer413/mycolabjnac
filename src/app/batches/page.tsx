@@ -1,34 +1,23 @@
+"use client";
+
+import { useLiveQuery } from "dexie-react-hooks";
 import { PageHeader } from "@/components/PageHeader";
-import { BatchTracker, BatchRow } from "@/components/BatchTracker";
-import { prisma } from "@/lib/db";
+import { BatchTracker } from "@/components/BatchTracker";
+import { listBatches } from "@/lib/local/store";
 
-export const dynamic = "force-dynamic";
-
-export default async function BatchesPage() {
-  const batches = await prisma.batch.findMany({
-    orderBy: [{ inoculationDate: "desc" }, { createdAt: "desc" }],
-  });
-
-  const rows: BatchRow[] = batches.map((b) => ({
-    id: b.id,
-    species: b.species,
-    quantity: b.quantity,
-    pdaBatchRef: b.pdaBatchRef,
-    sterilizationMethod: b.sterilizationMethod,
-    inoculationDate: b.inoculationDate.toISOString(),
-    zone: b.zone,
-    outcome: b.outcome,
-    notes: b.notes,
-  }));
+export default function BatchesPage() {
+  // Reads from the on-device database and re-renders automatically whenever a
+  // batch is added, edited, or deleted — no manual refresh needed.
+  const rows = useLiveQuery(listBatches, []);
 
   return (
     <>
       <PageHeader
         title="Batches"
-        subtitle={`${rows.length} logged`}
+        subtitle={rows ? `${rows.length} logged` : "…"}
         settingsLink
       />
-      <BatchTracker batches={rows} />
+      {rows && <BatchTracker batches={rows} />}
     </>
   );
 }

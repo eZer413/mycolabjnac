@@ -1,26 +1,17 @@
+"use client";
+
+import { useLiveQuery } from "dexie-react-hooks";
 import { PageHeader } from "@/components/PageHeader";
 import { PatternsView } from "@/components/PatternsView";
-import { prisma } from "@/lib/db";
-import { buildPatternReport } from "@/lib/patterns";
+import { getPatternReport } from "@/lib/local/store";
 
-export const dynamic = "force-dynamic";
-
-export default async function PatternsPage() {
-  const batches = await prisma.batch.findMany({
-    select: {
-      outcome: true,
-      sterilizationMethod: true,
-      zone: true,
-      species: true,
-    },
-  });
-
-  const report = buildPatternReport(batches);
+export default function PatternsPage() {
+  const report = useLiveQuery(getPatternReport, []);
 
   return (
     <>
       <PageHeader title="Patterns" subtitle="What's failing, and where" />
-      <PatternsView report={report} />
+      {report && <PatternsView report={report} />}
     </>
   );
 }
